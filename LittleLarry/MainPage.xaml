@@ -7,7 +7,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    </Grid>
+    <StackPanel Orientation="Horizontal" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Width="75">
+            <TextBlock Text="---------" />
+            <TextBlock Text="---------" />
+            <TextBlock Text="---------" />
+            <TextBlock Text="Light: " />
+            <TextBlock Text="Temp: " />
+            <TextBlock Text="Accel: " />
+            <TextBlock Text="Button 18: " />
+            <TextBlock Text="Button 22: " />
+            <TextBlock Text="Leds: " />
+            <TextBlock Text="Analog: " />
+        </StackPanel>
+        <StackPanel>
+            <TextBlock Text="---------" />
+            <TextBlock Text="---------" />
+            <TextBlock Text="---------" />
+            <TextBlock Name="LightTextBox" />
+            <TextBlock Name="TempTextBox" />
+            <TextBlock Name="AccelTextBox" />
+            <TextBlock Name="Button18TextBox" />
+            <TextBlock Name="Button22TextBox" />
+            <TextBlock Name="LedsTextBox" />
+            <TextBlock Name="AnalogTextBox" />
+        </StackPanel>
+    </StackPanel>
 </Page>
