@@ -28,21 +28,19 @@ namespace LittleLarry.Model
             if (Gamepad.Gamepads.Count == 1)
                 _gamepad = Gamepad.Gamepads[0];
         }
-
-        public bool Process()
+        
+        public (int x, int y) GetValues()
         {
             if (_gamepad != null)
             {
                 var state = _gamepad.GetCurrentReading();
-                Y = (int)(Math.Round(state.LeftThumbstickY * 10));
-                X = (int)(Math.Round(state.RightThumbstickX * 10));
-                return true;
+                return
+                (
+                    (int)(Math.Round(state.LeftThumbstickY * 10)),
+                    (int)(Math.Round(state.RightThumbstickX * 10))
+                );
             }
-
-            return false;
+            else return (0, 0);
         }
-
-        public int Y { get; set; }
-        public int X { get; set; }
     }
 }

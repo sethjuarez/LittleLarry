@@ -12,15 +12,10 @@ namespace LittleLarry.Model
         private FEZHAT _hat;
         public Accelerometer(FEZHAT hat) => _hat = hat;
 
-        public bool Process()
-        {
-            return true;
-        }
-
-        (double, double, double) GetValues()
+        public (double x, double y, double z) GetValues()
         {
             _hat.GetAcceleration(out var x, out var y, out var z);
-             return (x, y, z);
+             return (x: x, y: y, z: z);
         }
     }
 }

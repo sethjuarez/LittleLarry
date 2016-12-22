@@ -118,14 +118,13 @@ namespace LittleLarry.Views
                     return n;
             }
 
-            _lightSensor.Process();
-            Ain1 = _lightSensor.Ain1Color;
-            Ain2 = _lightSensor.Ain2Color;
-            Ain3 = _lightSensor.Ain3Color;
+            (double ain1, double ain2, double ain3) = _lightSensor.GetValues();
 
-            _controller.Process();
-            X = _controller.X;
-            Y = _controller.Y;
+            Ain1 = _lightSensor.ToColor(ain1);
+            Ain2 = _lightSensor.ToColor(ain2);
+            Ain3 = _lightSensor.ToColor(ain3);
+
+            (X, Y) = _controller.GetValues();
 
             if (Y < 0)
             {
