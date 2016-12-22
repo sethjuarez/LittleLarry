@@ -1,12 +1,18 @@
 ﻿<Page
-    x:Class="LittleLarry.MainPage"
+    x:Class="LittleLarry.Views.StartPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:LittleLarry"
+    xmlns:local="using:LittleLarry.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.DataContext>
+        <local:StartPageViewModel />
+    </Page.DataContext>
     <Page.Resources>
+        <SolidColorBrush x:Key="Ain1" Color="{Binding Ain1}"/>
+        <SolidColorBrush x:Key="Ain2" Color="{Binding Ain2}"/>
+        <SolidColorBrush x:Key="Ain3" Color="{Binding Ain3}"/>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="28"/>
         </Style>
@@ -40,17 +46,17 @@
             <TextBlock Name="Button18TextBox" />
             <TextBlock Name="Button22TextBox" />
             <TextBlock Name="LedsTextBox" />
-            <Border Name="Ain1Border">
+            <Border Name="Ain1Border" Background="{StaticResource Ain1}">
                 <TextBlock Name="Ain1TextBox" />
             </Border>
-            <Border Name="Ain2Border">
+            <Border Name="Ain2Border" Background="{StaticResource Ain2}">
                 <TextBlock Name="Ain2TextBox" />
             </Border>
-            <Border Name="Ain3Border">
+            <Border Name="Ain3Border" Background="{StaticResource Ain3}">
                 <TextBlock Name="Ain3TextBox" />
             </Border>
-            <TextBlock Name="CntrlLTextBox" />
-            <TextBlock Name="CntrlRTextBox" />
+            <TextBlock Name="CntrlLTextBox" Text="{Binding Y}" />
+            <TextBlock Name="CntrlRTextBox" Text="{Binding X}"/>
             <TextBlock Name="ButtonsTextBox" />
         </StackPanel>
     </StackPanel>

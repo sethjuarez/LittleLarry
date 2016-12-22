@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{F5CD45C2-7938-4632-BFDE-F88B0B079B69}</ProjectGuid>
+    <ProjectGuid>{6524DFDD-6F7B-470D-95C7-4C8D1B2429DE}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LittleLarry</RootNamespace>
@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -51,7 +51,6 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <EnableGatekeeperAnalysis>true</EnableGatekeeperAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <OutputPath>bin\ARM\Release\</OutputPath>
@@ -96,10 +95,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Model\Accelerometer.cs" />
+    <Compile Include="Model\Controller.cs" />
+    <Compile Include="Model\LightSensor.cs" />
+    <Compile Include="Model\Data.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\StartPage.xaml.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StartPageViewModel.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -122,11 +128,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Views\StartPage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
