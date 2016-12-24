@@ -26,8 +26,8 @@
             <TextBlock Text="Light: " />
             <TextBlock Text="Temp: " />
             <TextBlock Text="Accel: " />
-            <TextBlock Text="Btn18: " />
-            <TextBlock Text="Btn22: " />
+            <TextBlock Text="Count:" />
+            <TextBlock Text="Sum:" />
             <TextBlock Text="Leds: " />
             <TextBlock Text="Ain1: " />
             <TextBlock Text="Ain2: " />
@@ -36,15 +36,15 @@
             <TextBlock Text="CntrlR: " />
             <TextBlock Text="Btns: " />
         </StackPanel>
-        <StackPanel Width="300">
+        <StackPanel Width="800">
             <TextBlock Text="---------" />
             <TextBlock Text="---------" />
             <TextBlock Text="---------" />
-            <TextBlock Name="LightTextBox" />
+            <TextBlock Name="LightTextBox" Text="{Binding Arr}" Width="800"/>
             <TextBlock Name="TempTextBox" />
             <TextBlock Name="AccelTextBox" />
-            <TextBlock Name="Button18TextBox" />
-            <TextBlock Name="Button22TextBox" />
+            <TextBlock Name="Button18TextBox" Text="{Binding Count}" />
+            <TextBlock Name="Button22TextBox" Text="{Binding Sum}" />
             <TextBlock Name="LedsTextBox" />
             <Border Name="Ain1Border" Background="{StaticResource Ain1}">
                 <TextBlock Name="Ain1TextBox" />

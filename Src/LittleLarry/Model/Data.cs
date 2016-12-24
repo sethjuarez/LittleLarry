@@ -1,5 +1,13 @@
 ﻿namespace LittleLarry.Model
 {
+    public enum Mode
+    {
+        Idle,
+        Learn,
+        Model,
+        Auto
+    }
+
     public class Data
     {
         public double Ain1 { get; set; }
