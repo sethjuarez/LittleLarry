@@ -1,15 +1,12 @@
-﻿namespace LittleLarry.Model
+﻿using SQLite;
+
+namespace LittleLarry.Model
 {
-    public enum Mode
-    {
-        Idle,
-        Learn,
-        Model,
-        Auto
-    }
 
     public class Data
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
         public double Ain1 { get; set; }
         public double Ain2 { get; set; }
         public double Ain3 { get; set; }

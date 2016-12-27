@@ -15,6 +15,9 @@ namespace LittleLarry.Views
         private DispatcherTimer _timer;
         private Controller _controller;
         private LightSensor _lightSensor;
+        private ButtonSensor _buttonSensor;
+        private DataService _dataService;
+        
         private Mode _currentMode = Mode.Idle;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -31,6 +34,8 @@ namespace LittleLarry.Views
             _hat = await FEZHAT.CreateAsync();
             _controller = new Controller();
             _lightSensor = new LightSensor(_hat);
+            _buttonSensor = new ButtonSensor(_hat);
+            
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(100);
@@ -123,68 +128,71 @@ namespace LittleLarry.Views
             }
         }
 
-        private int _x;
-        public int X
+        private int _speed;
+        public int Speed
         {
-            get { return _x; }
+            get { return _speed; }
             set
             {
-                if (_x != value)
+                if (_speed != value)
                 {
-                    _x = value;
+                    _speed = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private int _y;
-        public int Y
+        private int _turn;
+        public int Turn
         {
-            get { return _y; }
+            get { return _turn; }
             set
             {
-                if (_y != value)
+                if (_turn != value)
                 {
-                    _y = value;
+                    _turn = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-
-        Queue<Mode> _buttons = new Queue<Mode>(10);
         private void OnTick(object sender, object e)
         {
-            // handle button pushes
-            if (_hat.IsDIO18Pressed() && _hat.IsDIO22Pressed()) _buttons.Enqueue(Mode.Auto);
-            else if (_hat.IsDIO18Pressed()) _buttons.Enqueue(Mode.Learn);
-            else if (_hat.IsDIO22Pressed()) _buttons.Enqueue(Mode.Model);
-            else _buttons.Enqueue(Mode.Idle);
-            if (_buttons.Count > 10) _buttons.Dequeue();
-
-            Count = _buttons.Count;
-            Arr = $"[{string.Join(", ", _buttons.ToArray())}]";
-
-            if (Count > 9 && _buttons.All(m => m == Mode.Auto))
+            // get mode
+            _buttonSensor.Process();
+            if (_currentMode != _buttonSensor.Mode)
             {
-                _currentMode = _currentMode == Mode.Auto ? Mode.Idle : Mode.Auto;
-                _buttons.Clear();
-            }
-            else if (Count > 9 && _buttons.All(m => m == Mode.Learn))
-            {
-                _currentMode = _currentMode == Mode.Learn ? Mode.Idle : Mode.Learn;
-                _buttons.Clear();
-            }
-            else if (Count > 9 && _buttons.All(m => m == Mode.Model))
-            {
-                _currentMode = _currentMode == Mode.Model ? Mode.Idle : Mode.Model;
-                _buttons.Clear();
+                _currentMode = _buttonSensor.Mode;
+                SetModeIndicators(_currentMode);
             }
 
+            var data = GetData();
 
 
+            Ain1 = _lightSensor.ToColor(data.Ain1);
+            Ain2 = _lightSensor.ToColor(data.Ain2);
+            Ain3 = _lightSensor.ToColor(data.Ain3);
+
+            Speed = data.Speed;
+            Turn = data.Turn;
+
+            if(_currentMode == Mode.Learn)
+            {
+                if(_dataService == null)
+                    _dataService = new DataService();
+                _dataService.Add(data);
+            }
+
+            (var speedA, var speedB) = _controller.Convert(data.Speed, data.Turn);
+            _hat.MotorA.Speed = speedA;
+            _hat.MotorB.Speed = speedB;
+
+        }
+
+        private void SetModeIndicators(Mode mode)
+        {
             // current mode
-            switch (_currentMode)
+            switch (mode)
             {
                 case Mode.Idle:
                     _hat.D2.TurnOff();
@@ -203,75 +211,31 @@ namespace LittleLarry.Views
                     _hat.D3.Color = FEZHAT.Color.Green;
                     break;
             }
+        }
 
-
+        private Data GetData()
+        {
+            Data data = new Data();
 
             // handle line tracking sensors
             (double ain1, double ain2, double ain3) = _lightSensor.GetValues();
-
-            Ain1 = _lightSensor.ToColor(ain1);
-            Ain2 = _lightSensor.ToColor(ain2);
-            Ain3 = _lightSensor.ToColor(ain3);
-
+            data.Ain1 = ain1;
+            data.Ain2 = ain2;
+            data.Ain3 = ain3;
+            
             // handle accelerometer values;
             _hat.GetAcceleration(out double x, out double y, out double z);
+            data.AccelerationX = x;
+            data.AccelerationY = y;
+            data.AccelerationZ = z;
 
             // handle controller values
-            (X, Y) = _controller.GetValues();
-            (var speedA, var speedB) = ConvertControllerToSpeed(X, Y);
-            _hat.MotorA.Speed = speedA;
-            _hat.MotorB.Speed = speedB;
+            (int speed, int turn) = _controller.GetValues();
+            data.Speed = speed;
+            data.Turn = turn;
+
+            return data;
         }
 
-        private (double SpeedA, double SpeedB) ConvertControllerToSpeed(int x, int y)
-        {
-            double GetFloor(int num)
-            {
-                double n = (double)num / 10;
-                if (n < -1)
-                    return -1;
-                else if (n > 1)
-                    return 1;
-                else
-                    return n;
-            }
-
-            double speedA, speedB = 0;
-
-            if (y < 0)
-            {
-                if (x < 0)
-                {
-                    speedA = GetFloor(y - x);
-                    speedB = GetFloor(y);
-                }
-                else
-                {
-                    speedA = GetFloor(y);
-                    speedB = GetFloor(y + x);
-                }
-            }
-            else if (y > 0)
-            {
-                if (X < 0)
-                {
-                    speedA = GetFloor(y + x);
-                    speedB = GetFloor(y);
-                }
-                else
-                {
-                    speedA = GetFloor(y);
-                    speedB = GetFloor(y - x);
-                }
-            }
-            else
-            {
-                speedA = 0;
-                speedB = 0;
-            }
-
-
-            return (speedA, speedB);
-        }
     }
 }

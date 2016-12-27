@@ -32,8 +32,8 @@
             <TextBlock Text="Ain1: " />
             <TextBlock Text="Ain2: " />
             <TextBlock Text="Ain3: " />
-            <TextBlock Text="CntrlL: " />
-            <TextBlock Text="CntrlR: " />
+            <TextBlock Text="Speed: " />
+            <TextBlock Text="Turn: " />
             <TextBlock Text="Btns: " />
         </StackPanel>
         <StackPanel Width="800">
@@ -55,8 +55,8 @@
             <Border Name="Ain3Border" Background="{StaticResource Ain3}">
                 <TextBlock Name="Ain3TextBox" />
             </Border>
-            <TextBlock Name="CntrlLTextBox" Text="{Binding Y}" />
-            <TextBlock Name="CntrlRTextBox" Text="{Binding X}"/>
+            <TextBlock Name="CntrlLTextBox" Text="{Binding Speed}" />
+            <TextBlock Name="CntrlRTextBox" Text="{Binding Turn}"/>
             <TextBlock Name="ButtonsTextBox" />
         </StackPanel>
     </StackPanel>
