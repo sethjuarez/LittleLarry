@@ -27,7 +27,8 @@ namespace LittleLarry.Model
 
         public void Add(Data d)
         {
-            _connection.Insert(d);
+            if (d.Speed != 0 && d.Turn != 0)
+                _connection.Insert(d);
         }
 
         public void Dispose()
