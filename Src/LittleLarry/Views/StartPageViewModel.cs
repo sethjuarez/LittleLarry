@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using System.Linq;
+using LittleLarry.Hardware;
 
 namespace LittleLarry.Views
 {
@@ -25,10 +26,10 @@ namespace LittleLarry.Views
 
         public StartPageViewModel()
         {
-            Setup();
+            SetupAsync();
         }
 
-        private async void Setup()
+        private async void SetupAsync()
         {
             CurrentMode = Mode.Idle;
             _hat = await FEZHAT.CreateAsync();
@@ -38,8 +39,10 @@ namespace LittleLarry.Views
             _dataService = new DataService();
             _mlService = new MachineLearningService();
 
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(100);
+            _timer = new DispatcherTimer()
+            {
+                Interval = TimeSpan.FromMilliseconds(100)
+            };
             _timer.Tick += OnTick;
             _timer.Start();
         }

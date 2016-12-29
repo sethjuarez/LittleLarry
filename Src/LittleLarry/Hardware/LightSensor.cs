@@ -1,7 +1,7 @@
 ﻿using GHIElectronics.UWP.Shields;
 using Windows.UI;
 
-namespace LittleLarry.Model
+namespace LittleLarry.Hardware
 {
     public class LightSensor
     {

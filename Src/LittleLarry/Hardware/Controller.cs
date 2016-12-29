@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.Gaming.Input;
 
-namespace LittleLarry.Model
+namespace LittleLarry.Hardware
 {
     public class Controller
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LittleLarry.Model
+namespace LittleLarry.Hardware
 {
     public class Accelerometer
     {
