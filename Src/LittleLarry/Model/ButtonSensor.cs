@@ -33,7 +33,7 @@ namespace LittleLarry.Model
             if (_buttons.Count > 9 && _buttons.All(m => m == Mode.Auto))
             {
                 _mode = _mode == Mode.Auto ? Mode.Idle : Mode.Auto;
-                _buttons.Clear();
+                _buttons.Clear(); 
             }
             else if (_buttons.Count > 9 && _buttons.All(m => m == Mode.Learn))
             {
@@ -50,6 +50,12 @@ namespace LittleLarry.Model
         public Mode Mode
         {
             get { return _mode; }
+        }
+
+        public void SetIdle()
+        {
+            _buttons.Clear();
+            _mode = Mode.Idle;
         }
     }
 }

@@ -17,8 +17,7 @@ namespace LittleLarry.Views
         private LightSensor _lightSensor;
         private ButtonSensor _buttonSensor;
         private DataService _dataService;
-        
-        private Mode _currentMode = Mode.Idle;
+        private MachineLearningService _mlService;
 
         public event PropertyChangedEventHandler PropertyChanged;
         internal void OnPropertyChanged([CallerMemberName] string name = null) =>
@@ -31,11 +30,13 @@ namespace LittleLarry.Views
 
         private async void Setup()
         {
+            CurrentMode = Mode.Idle;
             _hat = await FEZHAT.CreateAsync();
             _controller = new Controller();
             _lightSensor = new LightSensor(_hat);
             _buttonSensor = new ButtonSensor(_hat);
-            
+            _dataService = new DataService();
+            _mlService = new MachineLearningService();
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(100);
@@ -156,18 +157,31 @@ namespace LittleLarry.Views
             }
         }
 
+        private Mode _currentMode;
+        private Mode CurrentMode
+        {
+            get { return _currentMode; }
+            set
+            {
+                if (_currentMode != value)
+                {
+                    _currentMode = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private void OnTick(object sender, object e)
         {
             // get mode
             _buttonSensor.Process();
-            if (_currentMode != _buttonSensor.Mode)
+            if (CurrentMode != _buttonSensor.Mode)
             {
-                _currentMode = _buttonSensor.Mode;
-                SetModeIndicators(_currentMode);
+                CurrentMode = _buttonSensor.Mode;
+                SetModeIndicators(CurrentMode);
             }
 
             var data = GetData();
-
 
             Ain1 = _lightSensor.ToColor(data.Ain1);
             Ain2 = _lightSensor.ToColor(data.Ain2);
@@ -176,17 +190,28 @@ namespace LittleLarry.Views
             Speed = data.Speed;
             Turn = data.Turn;
 
-            if(_currentMode == Mode.Learn)
-            {
-                if(_dataService == null)
-                    _dataService = new DataService();
-                _dataService.Add(data);
-            }
 
+            if (CurrentMode == Mode.Model)
+            {
+                _mlService.Model(_dataService.GetData(100000).ToArray());
+                _buttonSensor.SetIdle();
+            }
+            else if (CurrentMode == Mode.Auto)
+            {
+                if (_mlService.HasModel())
+                    data = _mlService.Predict(data);
+                else
+                    _buttonSensor.SetIdle();
+            }
+            else
+                Drive(data);
+        }
+
+        private void Drive(Data data)
+        {
             (var speedA, var speedB) = _controller.Convert(data.Speed, data.Turn);
             _hat.MotorA.Speed = speedA;
             _hat.MotorB.Speed = speedB;
-
         }
 
         private void SetModeIndicators(Mode mode)
@@ -222,7 +247,7 @@ namespace LittleLarry.Views
             data.Ain1 = ain1;
             data.Ain2 = ain2;
             data.Ain3 = ain3;
-            
+
             // handle accelerometer values;
             _hat.GetAcceleration(out double x, out double y, out double z);
             data.AccelerationX = x;

@@ -1,10 +1,16 @@
-﻿using SQLite;
+﻿using numl;
+using numl.Model;
+using numl.Supervised;
+using numl.Supervised.DecisionTree;
+using SQLite;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LittleLarry.Model
 {
-
     public class DataService : IDisposable
     {
         private string _path;
@@ -13,8 +19,9 @@ namespace LittleLarry.Model
         {
             _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path,
                                  "LittleLarryData.db");
-            _connection = new SQLiteConnection(_path, 
+            _connection = new SQLiteConnection(_path,
                                  SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite);
+
             _connection.CreateTable<Data>();
         }
 
@@ -27,6 +34,13 @@ namespace LittleLarry.Model
         {
             _connection.Close();
             _connection.Dispose();
+        }
+
+        public IEnumerable<Data> GetData(int total)
+        {
+            return _connection.Table<Data>()
+                              .OrderByDescending(d => d.Id)
+                              .Take(total);
         }
     }
 }

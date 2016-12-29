@@ -22,7 +22,7 @@
         <StackPanel Width="100">
             <TextBlock Text="---------" />
             <TextBlock Text="---------" />
-            <TextBlock Text="---------" />
+            <Button x:Name="ClearHistory">Clear History</Button>
             <TextBlock Text="Light: " />
             <TextBlock Text="Temp: " />
             <TextBlock Text="Accel: " />

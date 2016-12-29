@@ -17,6 +17,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>LittleLarry_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -101,6 +104,7 @@
     <Compile Include="Model\DataService.cs" />
     <Compile Include="Model\LightSensor.cs" />
     <Compile Include="Model\Data.cs" />
+    <Compile Include="Model\MachineLearningService.cs" />
     <Compile Include="Model\Mode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\StartPage.xaml.cs">
@@ -137,6 +141,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs.120, Version=14.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Universal</Name>
+    </SDKReference>
     <SDKReference Include="SQLite.UWP.2015, Version=3.15.2">
       <Name>SQLite for Universal Windows Platform</Name>
     </SDKReference>

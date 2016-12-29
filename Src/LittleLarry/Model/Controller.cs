@@ -53,11 +53,11 @@ namespace LittleLarry.Model
             else return (0, 0);
         }
 
-        public (double SpeedA, double SpeedB) Convert(int x, int y)
+        public (double SpeedA, double SpeedB) Convert(int speed, int turn)
         {
-            double GetFloor(int num)
+            double GetFloor(double num)
             {
-                double n = (double)num / 10;
+                double n = num / 10d;
                 if (n < -1)
                     return -1;
                 else if (n > 1)
@@ -66,43 +66,23 @@ namespace LittleLarry.Model
                     return n;
             }
 
-            double speedA, speedB = 0;
+            double s = speed / 2d;
+            double t = Math.Abs(turn / 2d);
 
-            if (y < 0)
+            if (speed >= 0)
             {
-                if (x < 0)
-                {
-                    speedA = GetFloor(y - x);
-                    speedB = GetFloor(y);
-                }
+                if (turn > 0)
+                    return (GetFloor(s + t), GetFloor(s));
                 else
-                {
-                    speedA = GetFloor(y);
-                    speedB = GetFloor(y + x);
-                }
-            }
-            else if (y > 0)
-            {
-                if (x < 0)
-                {
-                    speedA = GetFloor(y + x);
-                    speedB = GetFloor(y);
-                }
-                else
-                {
-                    speedA = GetFloor(y);
-                    speedB = GetFloor(y - x);
-                }
+                    return (GetFloor(s), GetFloor(s + t));
             }
             else
             {
-                speedA = 0;
-                speedB = 0;
+                if (turn > 0)
+                    return (GetFloor(s - t), GetFloor(s));
+                else
+                    return (GetFloor(s), GetFloor(s - t));
             }
-
-
-            return (speedA, speedB);
         }
-
     }
 }
