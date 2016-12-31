@@ -132,8 +132,8 @@ namespace LittleLarry.Views
             }
         }
 
-        private int _speed;
-        public int Speed
+        private double _speed;
+        public double Speed
         {
             get { return _speed; }
             set
@@ -146,8 +146,8 @@ namespace LittleLarry.Views
             }
         }
 
-        private int _turn;
-        public int Turn
+        private double _turn;
+        public double Turn
         {
             get { return _turn; }
             set
@@ -161,7 +161,7 @@ namespace LittleLarry.Views
         }
 
         private Mode _currentMode;
-        private Mode CurrentMode
+        public Mode CurrentMode
         {
             get { return _currentMode; }
             set
@@ -174,17 +174,54 @@ namespace LittleLarry.Views
             }
         }
 
+        bool _on = true;
         private void OnTick(object sender, object e)
         {
             // get mode
             _buttonSensor.Process();
             if (CurrentMode != _buttonSensor.Mode)
             {
+                // before we go out of Learn state,
+                // persist data to a file
+                if (CurrentMode == Mode.Learn)
+                    _dataService.Save(() =>
+                    {
+                        _hat.D3.Color = _on ? FEZHAT.Color.Red : FEZHAT.Color.White;
+                        _on = !_on;
+                    });
+
                 CurrentMode = _buttonSensor.Mode;
                 SetModeIndicators(CurrentMode);
             }
 
             var data = GetData();
+
+            switch (CurrentMode)
+            {
+                case Mode.Learn:
+                    _dataService.Add(data);
+                    Drive(data);
+                    break;
+                case Mode.Model:
+                    _timer.Stop();
+                    _mlService.Model(_dataService.GetData(100000).ToArray());
+                    _buttonSensor.SetIdle();
+                    _timer.Start();
+                    break;
+                case Mode.Auto:
+                    if (_mlService.HasModel())
+                    {
+                        data = _mlService.Predict(data);
+                        Drive(data);
+                    }
+                    else
+                        _buttonSensor.SetIdle();
+                    break;
+                case Mode.Idle:
+                    Drive(data);
+                    break;
+
+            }
 
             Ain1 = _lightSensor.ToColor(data.Ain1);
             Ain2 = _lightSensor.ToColor(data.Ain2);
@@ -193,23 +230,8 @@ namespace LittleLarry.Views
             Speed = data.Speed;
             Turn = data.Turn;
 
-
-            if (CurrentMode == Mode.Model)
-            {
-                _mlService.Model(_dataService.GetData(100000).ToArray());
-                _buttonSensor.SetIdle();
-            }
-            else if (CurrentMode == Mode.Auto)
-            {
-                if (_mlService.HasModel())
-                    data = _mlService.Predict(data);
-                else
-                    _buttonSensor.SetIdle();
-            }
-            else
-                Drive(data);
         }
-
+        
         private void Drive(Data data)
         {
             (var speedA, var speedB) = _controller.Convert(data.Speed, data.Turn);
@@ -258,7 +280,7 @@ namespace LittleLarry.Views
             data.AccelerationZ = z;
 
             // handle controller values
-            (int speed, int turn) = _controller.GetValues();
+            (double speed, double turn) = _controller.GetValues();
             data.Speed = speed;
             data.Turn = turn;
 

@@ -29,16 +29,12 @@ namespace LittleLarry.Hardware
                 _gamepad = Gamepad.Gamepads[0];
         }
 
-        public (int speed, int turn) GetValues()
+        public (double speed, double turn) GetValues()
         {
             if (_gamepad != null)
             {
                 var state = _gamepad.GetCurrentReading();
-                return
-                (
-                    (int)(Math.Round(state.LeftThumbstickY * 10)),
-                    (int)(Math.Round(state.RightThumbstickX * 10))
-                );
+                return (state.LeftThumbstickY, state.RightThumbstickX);
             }
             else return (0, 0);
         }
@@ -53,11 +49,11 @@ namespace LittleLarry.Hardware
             else return (0, 0);
         }
 
-        public (double SpeedA, double SpeedB) Convert(int speed, int turn)
+        public (double SpeedA, double SpeedB) Convert(double speed, double turn)
         {
             double GetFloor(double num)
             {
-                double n = num / 10d;
+                double n = num;
                 if (n < -1)
                     return -1;
                 else if (n > 1)

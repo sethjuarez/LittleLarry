@@ -13,10 +13,12 @@ namespace LittleLarry.Model
 {
     public class DataService : IDisposable
     {
+        private IList<Data> _data;
         private string _path;
         private SQLiteConnection _connection;
         public DataService()
         {
+            _data = new List<Data>();
             _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path,
                                  "LittleLarryData.db");
             _connection = new SQLiteConnection(_path,
@@ -27,8 +29,17 @@ namespace LittleLarry.Model
 
         public void Add(Data d)
         {
-            if (d.Speed != 0 && d.Turn != 0)
+            _data.Add(d);
+        }
+
+        public void Save(Action progress = null)
+        {
+            foreach (var d in _data)
+            {
                 _connection.Insert(d);
+                progress?.Invoke();
+            }
+            _data.Clear();
         }
 
         public void Dispose()

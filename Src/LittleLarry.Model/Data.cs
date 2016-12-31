@@ -14,7 +14,7 @@ namespace LittleLarry.Model
         public double AccelerationY { get; set; }
         public double AccelerationZ { get; set; }
 
-        public int Turn { get; set; }
-        public int Speed { get; set; }
+        public double Turn { get; set; }
+        public double Speed { get; set; }
     }
 }
