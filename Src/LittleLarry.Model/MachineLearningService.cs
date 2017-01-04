@@ -48,11 +48,18 @@ namespace LittleLarry.Model
 
         public void Model()
         {
-            var data = _connection.SQLiteConnection.Table<Data>()
-                                                  .Where(d => d.Speed >= 0)
-                                                  .OrderBy(d => d.Id)
+            var turnData = _connection.SQLiteConnection.Table<Data>()
+                                                  .Where(d => d.Turn != 0)
                                                   .ToList();
-            Model(data);
+            var idleData = _connection.SQLiteConnection.Table<Data>()
+                                                  .Where(d => d.Turn == 0)
+                                                  .ToList();
+            // balance data
+            if(idleData.Count() > turnData.Count())
+                idleData = idleData.Take(turnData.Count()).ToList();
+
+            turnData.AddRange(idleData);
+            Model(turnData.OrderBy(d => d.Id));
         }
 
         public void Model(IEnumerable<Data> data)

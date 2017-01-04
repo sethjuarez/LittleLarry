@@ -229,6 +229,11 @@ namespace LittleLarry.Views
                     return CurrentMode == Mode.Learn ? Mode.Idle : Mode.Learn;
                 else if (_controls.IsButtonPushed(GamepadButtons.Y) || _controls.DIO22Pressed)
                     return CurrentMode == Mode.Auto ? Mode.Idle : Mode.Auto;
+                else if (_controls.IsButtonPushed(GamepadButtons.X))
+                {
+                    _dataService.ClearData();
+                    return Mode.Idle;
+                }
                 else
                     return CurrentMode;
 
@@ -270,6 +275,7 @@ namespace LittleLarry.Views
             if (CurrentMode == Mode.Learn && mode != Mode.Learn)
                 ExitLearnMode();
 
+            Count = _dataService.RecordCount;
             CurrentMode = mode;
             SetModeIndicators(CurrentMode);
 

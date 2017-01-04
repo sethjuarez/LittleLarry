@@ -20,12 +20,22 @@ namespace LittleLarry.Model
             _data = new List<Data>();
             _connection = connection.Initialize();
             _connection.CreateTable<Data>();
+            RecordCount = _connection.Table<Data>().Count();
         }
 
         public void Add(Data d)
         {
             if (d.Speed > 0)
                 _data.Add(d);
+        }
+
+        public void ClearData()
+        {
+            if (RecordCount > 0)
+            {
+                _connection.Table<Data>().Delete(d => d.Speed > 0);
+                RecordCount = _connection.Table<Data>().Count();
+            }
         }
 
         public void Save(Action progress = null)
@@ -36,6 +46,7 @@ namespace LittleLarry.Model
                 progress?.Invoke();
             }
             _data.Clear();
+            RecordCount = _connection.Table<Data>().Count();
         }
 
         public void Dispose()
@@ -50,5 +61,7 @@ namespace LittleLarry.Model
                               .OrderByDescending(d => d.Id)
                               .Take(total);
         }
+
+        public int RecordCount { get; private set; }
     }
 }

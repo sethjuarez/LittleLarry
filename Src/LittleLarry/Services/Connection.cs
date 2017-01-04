@@ -20,9 +20,13 @@ namespace LittleLarry.Services
 
         public SQLiteConnection Initialize()
         {
-            SQLiteConnection = new SQLiteConnection(
-                  Path.Combine(DataPath, DB_NAME),
-                  SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite);
+            if (!File.Exists(Path.Combine(DataPath, DB_NAME)))
+                SQLiteConnection = new SQLiteConnection(
+                    Path.Combine(DataPath, DB_NAME),
+                    SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite);
+            else
+                SQLiteConnection = new SQLiteConnection(
+                    Path.Combine(DataPath, DB_NAME), SQLiteOpenFlags.ReadWrite);
             return SQLiteConnection;
         }
 

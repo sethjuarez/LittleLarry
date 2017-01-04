@@ -24,7 +24,7 @@
             <TextBlock Text="---------" />
             <Button x:Name="ClearHistory">Clear History</Button>
             <TextBlock Text="Mode: " />
-            <TextBlock Text="Temp: " />
+            <TextBlock Text="Recs: " />
             <TextBlock Text="Accel: " />
             <TextBlock Text="Left:" />
             <TextBlock Text="Right:" />
@@ -41,7 +41,7 @@
             <TextBlock Text="---------" />
             <TextBlock Text="---------" />
             <TextBlock Name="LightTextBox" Text="{Binding CurrentMode}" Width="800"/>
-            <TextBlock Name="TempTextBox" />
+            <TextBlock Name="TempTextBox" Text="{Binding Count}" />
             <TextBlock Name="AccelTextBox" />
             <TextBlock Name="Button18TextBox" Text="{Binding LeftTrigger}" />
             <TextBlock Name="Button22TextBox" Text="{Binding RightTrigger}" />
