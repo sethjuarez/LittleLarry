@@ -99,6 +99,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Hardware\Controls.cs" />
+    <Compile Include="Hardware\Speed.cs" />
+    <Compile Include="Services\Connection.cs" />
     <Compile Include="Hardware\Accelerometer.cs" />
     <Compile Include="Hardware\ButtonSensor.cs" />
     <Compile Include="Hardware\Controller.cs" />
@@ -136,11 +139,20 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\LittleLarry.Model\LittleLarry.Model.csproj">
       <Project>{7ba0d2e9-f415-4c83-82f1-33d161a1292e}</Project>
       <Name>LittleLarry.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
+      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.16.1">
+      <Name>SQLite for Universal Windows Platform</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

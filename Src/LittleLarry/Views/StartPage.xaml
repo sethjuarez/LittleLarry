@@ -40,7 +40,7 @@
             <TextBlock Text="---------" />
             <TextBlock Text="---------" />
             <TextBlock Text="---------" />
-            <TextBlock Name="Mode" Text="{Binding CurrentMode}" Width="800"/>
+            <TextBlock Name="LightTextBox" Text="{Binding CurrentMode}" Width="800"/>
             <TextBlock Name="TempTextBox" />
             <TextBlock Name="AccelTextBox" />
             <TextBlock Name="Button18TextBox" Text="{Binding Count}" />

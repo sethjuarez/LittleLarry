@@ -14,22 +14,18 @@ namespace LittleLarry.Model
     public class DataService : IDisposable
     {
         private IList<Data> _data;
-        private string _path;
         private SQLiteConnection _connection;
-        public DataService()
+        public DataService(IConnection connection)
         {
             _data = new List<Data>();
-            _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path,
-                                 "LittleLarryData.db");
-            _connection = new SQLiteConnection(_path,
-                                 SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite);
-
+            _connection = connection.Initialize();
             _connection.CreateTable<Data>();
         }
 
         public void Add(Data d)
         {
-            _data.Add(d);
+            if (d.Speed > 0)
+                _data.Add(d);
         }
 
         public void Save(Action progress = null)

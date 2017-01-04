@@ -1,8 +1,7 @@
 ﻿{
   "dependencies": {
-    "GHIElectronics.UWP.Shields.FEZHAT": "0.1.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.0-beta2",
-    "System.ValueTuple": "4.3.0"
+    "System.Collections.NonGeneric": "4.3.0"
   },
   "frameworks": {
     "uap10.0": {}

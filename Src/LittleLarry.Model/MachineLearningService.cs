@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,10 +17,13 @@ namespace LittleLarry.Model
     {
         private const string SPEEDMODEL = "SpeedModel";
         private const string TURNMODEL = "TurnModel";
-        private DecisionTreeGenerator _speedGenerator;
-        private DecisionTreeGenerator _turnGenerator;
-        public MachineLearningService()
+        private IConnection _connection;
+        public MachineLearningService(IConnection connection)
         {
+            // register assembly for type information
+            Register.Assembly(typeof(Data).GetTypeInfo().Assembly);
+
+            _connection = connection;
             InitializeGenerators();
         }
 
@@ -27,76 +31,80 @@ namespace LittleLarry.Model
 
         public IModel TurnModel { get; private set; }
 
+        public Generator SpeedGenerator { get; private set; }
+
+        public Generator TurnGenerator { get; private set; }
+
         private void InitializeGenerators()
         {
             var s = Descriptor.For<Data>()
                             .With(d => d.Ain1)
                             .With(d => d.Ain2)
                             .With(d => d.Ain3)
-                            .Learn(d => d.Speed);
+                            .Learn(d => d.Forward);
 
-            _speedGenerator = new DecisionTreeGenerator(descriptor: s,
+            SpeedGenerator = new DecisionTreeGenerator(descriptor: s,
                                                       depth: 10,
-                                                      width: 5,
+                                                      width: 4,
                                                       hint: 0);
 
             var t = Descriptor.For<Data>()
                             .With(d => d.Ain1)
                             .With(d => d.Ain2)
                             .With(d => d.Ain3)
-                            .Learn(d => d.Turn);
+                            .Learn(d => d.Direction);
 
-            _turnGenerator = new DecisionTreeGenerator(descriptor: t,
+            TurnGenerator = new DecisionTreeGenerator(descriptor: t,
                                                       depth: 10,
-                                                      width: 5,
+                                                      width: 4,
                                                       hint: 0);
 
-            SpeedModel = Load<IModel>(SPEEDMODEL);
-            TurnModel = Load<IModel>(TURNMODEL);
+            SpeedModel = Load<DecisionTreeModel>(SPEEDMODEL);
+            TurnModel = Load<DecisionTreeModel>(TURNMODEL);
+        }
+
+        public void Model()
+        {
+            var data = _connection.SQLiteConnection.Table<Data>()
+                                                  .Where(d => d.Speed >= 0)
+                                                  .OrderBy(d => d.Id)
+                                                  .ToList();
+            Model(data);
         }
 
         public void Model(IEnumerable<Data> data)
         {
-            SpeedModel = CreateModel(data, _speedGenerator, SPEEDMODEL);
-            TurnModel = CreateModel(data, _turnGenerator, TURNMODEL);
+            SpeedModel = CreateModel(data, SpeedGenerator, SPEEDMODEL);
+            TurnModel = CreateModel(data, TurnGenerator, TURNMODEL);
         }
 
         public bool HasModel()
         {
-            return SpeedModel == null || TurnModel == null;
+            return SpeedModel != null && TurnModel != null;
         }
-        public Data Predict(Data data)
+
+
+        public (double speed, double turn) Predict(Data data)
         {
             if (HasModel())
             {
-                data.Speed = 0;
-                data.Turn = 0;
+                var speed = (Speed)SpeedModel.PredictValue(data);
+                var turn = (Turn)TurnModel.PredictValue(data);
+                return (Data.ForwardToSpeed(speed), Data.DirectionToTurn(turn));
             }
-            else
-            {
-                SpeedModel.Predict(data);
-                TurnModel.Predict(data);
-            }
-            return data;
+            else return (0, 0);
         }
 
-        private string GetFilePath(string name)
+        private IModel CreateModel(IEnumerable<Data> data, Generator generator, string name)
         {
-            return Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path,
-                                 $"{name}.json");
+            var model = generator.Generate(data);
+            Save(model, name);
+            return model;
         }
 
-        private IModel CreateModel(IEnumerable<Data> data, IGenerator generator, string name)
+        private void Save(object model, string name)
         {
-            var learned = Learner.Learn(data, .8, 1000, generator);
-            Save(learned.Model, name);
-            Save(learned.Score, name + "Score");
-            return learned.Model;
-        }
-
-        private void Save<T>(T model, string name)
-        {
-            var file = GetFilePath(name);
+            var file = Path.Combine(_connection.DataPath, $"{name}.json");
             if (File.Exists(file)) File.Delete(file);
 
             using (var fs = new FileStream(file, FileMode.CreateNew))
@@ -106,20 +114,21 @@ namespace LittleLarry.Model
 
         private T Load<T>(string name)
         {
-            var file = GetFilePath(name);
+            var file = Path.Combine(_connection.DataPath, $"{name}.json");
             if (File.Exists(file))
             {
                 using (var fs = new FileStream(file, FileMode.Open))
                 using (var f = new StreamReader(fs))
                 {
-                    try
-                    {
-                        return (T)new JsonReader(f).Read();
-                    }
-                    catch
-                    {
-                        return default(T);
-                    }
+                    //try
+                    //{
+                        var val = new JsonReader(f).Read();
+                        return (T)val;
+                    //}
+                    //catch(Exception e)
+                    //{
+                    //    return default(T);
+                    //}
                 }
             }
             else

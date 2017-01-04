@@ -55,8 +55,13 @@ namespace LittleLarry.Hardware
 
         public void SetIdle()
         {
+            SetMode(Mode.Idle);
+        }
+
+        public void SetMode(Mode mode)
+        {
             _buttons.Clear();
-            _mode = Mode.Idle;
+            _mode = mode;
         }
     }
 }

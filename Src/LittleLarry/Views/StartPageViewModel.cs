@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using System.Linq;
 using LittleLarry.Hardware;
+using LittleLarry.Services;
 
 namespace LittleLarry.Views
 {
@@ -31,13 +32,17 @@ namespace LittleLarry.Views
 
         private async void SetupAsync()
         {
-            CurrentMode = Mode.Idle;
             _hat = await FEZHAT.CreateAsync();
+
+            var connection = new Connection();
             _controller = new Controller();
             _lightSensor = new LightSensor(_hat);
             _buttonSensor = new ButtonSensor(_hat);
-            _dataService = new DataService();
-            _mlService = new MachineLearningService();
+            _dataService = new DataService(connection);
+            _mlService = new MachineLearningService(connection);
+
+            CurrentMode = Mode.Idle;
+            SetModeIndicators(CurrentMode);
 
             _timer = new DispatcherTimer()
             {
@@ -184,11 +189,15 @@ namespace LittleLarry.Views
                 // before we go out of Learn state,
                 // persist data to a file
                 if (CurrentMode == Mode.Learn)
+                {
                     _dataService.Save(() =>
                     {
                         _hat.D3.Color = _on ? FEZHAT.Color.Red : FEZHAT.Color.White;
                         _on = !_on;
                     });
+
+                    _buttonSensor.SetMode(Mode.Model);
+                }
 
                 CurrentMode = _buttonSensor.Mode;
                 SetModeIndicators(CurrentMode);
@@ -203,16 +212,16 @@ namespace LittleLarry.Views
                     Drive(data);
                     break;
                 case Mode.Model:
-                    _timer.Stop();
-                    _mlService.Model(_dataService.GetData(100000).ToArray());
+                    _mlService.Model();
                     _buttonSensor.SetIdle();
-                    _timer.Start();
                     break;
                 case Mode.Auto:
                     if (_mlService.HasModel())
                     {
-                        data = _mlService.Predict(data);
-                        Drive(data);
+                        (double speed, double turn) = _mlService.Predict(data);
+                        Speed = speed;
+                        Turn = turn;
+                        Drive(speed, turn);
                     }
                     else
                         _buttonSensor.SetIdle();
@@ -234,7 +243,12 @@ namespace LittleLarry.Views
         
         private void Drive(Data data)
         {
-            (var speedA, var speedB) = _controller.Convert(data.Speed, data.Turn);
+            Drive(data.Speed, data.Turn);
+        }
+
+        private void Drive(double speed, double turn)
+        {
+            (var speedA, var speedB) = _controller.Convert(speed, turn);
             _hat.MotorA.Speed = speedA;
             _hat.MotorB.Speed = speedB;
         }
