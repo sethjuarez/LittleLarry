@@ -1,0 +1,16 @@
+# Little Larry Parts List
+
+1. [Wires!](https://www.amazon.com/gp/product/B01FRZG560/ref=oh_aui_detailpage_o05_s00?ie=UTF8&psc=1)
+2. [Battery](https://www.amazon.com/gp/product/B01JLEO9UC/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1)
+3. (Optional) [Wifi Router](https://www.amazon.com/gp/product/B012ZNMUL6/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
+4. [bluetooth dongle](https://www.amazon.com/gp/product/B00HHLAY7E/ref=oh_aui_detailpage_o07_s00?ie=UTF8&psc=1)
+5. [tft screen](https://www.amazon.com/gp/product/B012ZRYDYY/ref=oh_aui_detailpage_o08_s00?ie=UTF8&psc=1)
+6. [micro sd](https://www.amazon.com/gp/product/B00P3NMVVU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
+7. [wireless dongle](https://www.amazon.com/gp/product/B008IFXQFU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
+8. [raspberry pi 3 motherboard](https://www.amazon.com/gp/product/B01CD5VC92/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
+9. [motor chassis](https://www.amazon.com/gp/product/B01BXPETQG/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1)
+10. [wires](https://www.amazon.com/gp/product/B00M5WLZDW/ref=oh_aui_detailpage_o06_s00?ie=UTF8&psc=1)
+11. [lithium battery](https://www.amazon.com/Makerfocus-Lithium-Expansion-Cellphone-Raspberry/dp/B01LAEX7J0/)
+12. [fez hat](https://www.ghielectronics.com/catalog/product/500)
+13. [standoff screws](https://www.ghielectronics.com/catalog/product/371)
+14. [regular screws](https://www.ghielectronics.com/catalog/product/489)
