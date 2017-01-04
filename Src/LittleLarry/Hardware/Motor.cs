@@ -1,10 +1,28 @@
-﻿using System;
+﻿using GHIElectronics.UWP.Shields;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LittleLarry.Hardware
 {
-    public class Speed
+    public class Motor
     {
-        public static (double a, double b) Convert(double speed, double turn)
+        private FEZHAT _hat;
+        public Motor(FEZHAT hat)
+        {
+            _hat = hat;
+        }
+
+        public void Drive(double speed, double turn)
+        {
+            (var a, var b) = Convert(speed, turn);
+            _hat.MotorA.Speed = a;
+            _hat.MotorB.Speed = b;
+        }
+
+        private static (double a, double b) Convert(double speed, double turn)
         {
             double GetFloor(double num)
             {

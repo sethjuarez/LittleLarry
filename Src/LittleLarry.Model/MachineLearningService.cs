@@ -15,7 +15,6 @@ namespace LittleLarry.Model
 {
     public class MachineLearningService
     {
-        private const string SPEEDMODEL = "SpeedModel";
         private const string TURNMODEL = "TurnModel";
         private IConnection _connection;
         public MachineLearningService(IConnection connection)
@@ -27,27 +26,12 @@ namespace LittleLarry.Model
             InitializeGenerators();
         }
 
-        public IModel SpeedModel { get; private set; }
-
         public IModel TurnModel { get; private set; }
-
-        public Generator SpeedGenerator { get; private set; }
 
         public Generator TurnGenerator { get; private set; }
 
         private void InitializeGenerators()
         {
-            var s = Descriptor.For<Data>()
-                            .With(d => d.Ain1)
-                            .With(d => d.Ain2)
-                            .With(d => d.Ain3)
-                            .Learn(d => d.Forward);
-
-            SpeedGenerator = new DecisionTreeGenerator(descriptor: s,
-                                                      depth: 10,
-                                                      width: 4,
-                                                      hint: 0);
-
             var t = Descriptor.For<Data>()
                             .With(d => d.Ain1)
                             .With(d => d.Ain2)
@@ -59,7 +43,6 @@ namespace LittleLarry.Model
                                                       width: 4,
                                                       hint: 0);
 
-            SpeedModel = Load<DecisionTreeModel>(SPEEDMODEL);
             TurnModel = Load<DecisionTreeModel>(TURNMODEL);
         }
 
@@ -74,13 +57,13 @@ namespace LittleLarry.Model
 
         public void Model(IEnumerable<Data> data)
         {
-            SpeedModel = CreateModel(data, SpeedGenerator, SPEEDMODEL);
-            TurnModel = CreateModel(data, TurnGenerator, TURNMODEL);
+            if (data.Count() > 0)
+                TurnModel = CreateModel(data, TurnGenerator, TURNMODEL);
         }
 
         public bool HasModel()
         {
-            return SpeedModel != null && TurnModel != null;
+            return TurnModel != null;
         }
 
 
@@ -88,9 +71,8 @@ namespace LittleLarry.Model
         {
             if (HasModel())
             {
-                var speed = (Speed)SpeedModel.PredictValue(data);
                 var turn = (Turn)TurnModel.PredictValue(data);
-                return (Data.ForwardToSpeed(speed), Data.DirectionToTurn(turn));
+                return (0.4, Data.DirectionToTurn(turn));
             }
             else return (0, 0);
         }
@@ -120,20 +102,12 @@ namespace LittleLarry.Model
                 using (var fs = new FileStream(file, FileMode.Open))
                 using (var f = new StreamReader(fs))
                 {
-                    //try
-                    //{
-                        var val = new JsonReader(f).Read();
-                        return (T)val;
-                    //}
-                    //catch(Exception e)
-                    //{
-                    //    return default(T);
-                    //}
+                    var val = new JsonReader(f).Read();
+                    return (T)val;
                 }
             }
             else
                 return default(T);
         }
-
     }
 }

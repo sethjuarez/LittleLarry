@@ -22,17 +22,12 @@ namespace LittleLarry.Model
         {
             get
             {
-                if (Math.Abs(Turn) < 0.01)
+                if (Turn < 0)
+                    return Model.Turn.Left;
+                else if (Turn > 0)
+                    return Model.Turn.Right;
+                else
                     return Model.Turn.Straight;
-                else if (Turn >= -0.1 && Turn < -0.01)
-                    return Model.Turn.Left;
-                else if (Turn <= -0.1)
-                    return Model.Turn.Left;
-                else if (Turn >= 0.01 && Turn < 0.1)
-                    return Model.Turn.Right;
-                else if (Turn >= 0.1)
-                    return Model.Turn.Right;
-                return Model.Turn.Straight;
             }
         }
 
@@ -42,14 +37,10 @@ namespace LittleLarry.Model
             {
                 case Model.Turn.Straight:
                     return 0;
-                case Model.Turn.SmallLeft:
-                    return -0.05;
                 case Model.Turn.Left:
-                    return -0.1;
-                case Model.Turn.SmallRight:
-                    return 0.5;
+                    return -0.6;
                 case Model.Turn.Right:
-                    return 0.1;
+                    return 0.6;
                 default:
                     return 0;
             }
@@ -59,18 +50,10 @@ namespace LittleLarry.Model
         {
             get
             {
-                if (Speed < 0.3)
-                    return Model.Speed.Stopped;
-                else if (Speed >= .3 && Speed < 0.35)
-                    return Model.Speed.Slower;
-                else if (Speed >= 0.35 && Speed < 0.4)
-                    return Model.Speed.Slow;
-                else if (Speed >= 0.4 && Speed < 0.45)
-                    return Model.Speed.Fast;
-                else if (Speed >= 0.45)
-                    return Model.Speed.Faster;
+                if (Speed > 0)
+                    return Model.Speed.Go;
                 else
-                    return Model.Speed.Stopped;
+                    return Model.Speed.Stop;
             }
         }
 
@@ -78,16 +61,10 @@ namespace LittleLarry.Model
         {
             switch (forward)
             {
-                case Model.Speed.Stopped:
+                case Model.Speed.Stop:
                     return 0;
-                case Model.Speed.Slower:
-                    return 0.3;
-                case Model.Speed.Slow:
-                    return 0.35;
-                case Model.Speed.Fast:
+                case Model.Speed.Go:
                     return 0.4;
-                case Model.Speed.Faster:
-                    return 0.45;
                 default:
                     return 0;
             }

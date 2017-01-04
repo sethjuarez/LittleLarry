@@ -26,8 +26,8 @@
             <TextBlock Text="Mode: " />
             <TextBlock Text="Temp: " />
             <TextBlock Text="Accel: " />
-            <TextBlock Text="Count:" />
-            <TextBlock Text="Sum:" />
+            <TextBlock Text="Left:" />
+            <TextBlock Text="Right:" />
             <TextBlock Text="Leds: " />
             <TextBlock Text="Ain1: " />
             <TextBlock Text="Ain2: " />
@@ -43,8 +43,8 @@
             <TextBlock Name="LightTextBox" Text="{Binding CurrentMode}" Width="800"/>
             <TextBlock Name="TempTextBox" />
             <TextBlock Name="AccelTextBox" />
-            <TextBlock Name="Button18TextBox" Text="{Binding Count}" />
-            <TextBlock Name="Button22TextBox" Text="{Binding Sum}" />
+            <TextBlock Name="Button18TextBox" Text="{Binding LeftTrigger}" />
+            <TextBlock Name="Button22TextBox" Text="{Binding RightTrigger}" />
             <TextBlock Name="LedsTextBox" />
             <Border Name="Ain1Border" Background="{StaticResource Ain1}">
                 <TextBlock Name="Ain1TextBox" />

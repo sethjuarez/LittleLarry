@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using System.Linq;
 using LittleLarry.Hardware;
 using LittleLarry.Services;
+using Windows.Gaming.Input;
 
 namespace LittleLarry.Views
 {
@@ -15,9 +16,14 @@ namespace LittleLarry.Views
     {
         private FEZHAT _hat;
         private DispatcherTimer _timer;
-        private Controller _controller;
+        private Motor _motor;
+
+        //private ButtonSensor _buttonSensor;
+        //private Controller _controller;
+
+        private Controls _controls;
         private LightSensor _lightSensor;
-        private ButtonSensor _buttonSensor;
+        
         private DataService _dataService;
         private MachineLearningService _mlService;
 
@@ -35,20 +41,24 @@ namespace LittleLarry.Views
             _hat = await FEZHAT.CreateAsync();
 
             var connection = new Connection();
-            _controller = new Controller();
+
+            /********* REMOVE *********/
+            //_controller = new Controller();
+            //_buttonSensor = new ButtonSensor(_hat);
+            /**************************/
+
+            _controls = new Controls(_hat);
             _lightSensor = new LightSensor(_hat);
-            _buttonSensor = new ButtonSensor(_hat);
+            _motor = new Motor(_hat);
+
             _dataService = new DataService(connection);
             _mlService = new MachineLearningService(connection);
 
             CurrentMode = Mode.Idle;
             SetModeIndicators(CurrentMode);
 
-            _timer = new DispatcherTimer()
-            {
-                Interval = TimeSpan.FromMilliseconds(100)
-            };
-            _timer.Tick += OnTick;
+            _timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
+            _timer.Tick += Process;
             _timer.Start();
         }
 
@@ -165,6 +175,34 @@ namespace LittleLarry.Views
             }
         }
 
+        private double _leftTrigger;
+        public double LeftTrigger
+        {
+            get { return _leftTrigger; }
+            set
+            {
+                if(_leftTrigger != value)
+                {
+                    _leftTrigger = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private double _rightTrigger;
+        public double RightTrigger
+        {
+            get { return _rightTrigger; }
+            set
+            {
+                if (_rightTrigger != value)
+                {
+                    _rightTrigger = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private Mode _currentMode;
         public Mode CurrentMode
         {
@@ -179,78 +217,99 @@ namespace LittleLarry.Views
             }
         }
 
-        bool _on = true;
-        private void OnTick(object sender, object e)
+
+        private Mode GetProcessedMode()
         {
-            // get mode
-            _buttonSensor.Process();
-            if (CurrentMode != _buttonSensor.Mode)
+            // cool off period to prevent toggling
+            if (_controls.TimeSinceMark.Milliseconds > 150)
             {
-                // before we go out of Learn state,
-                // persist data to a file
-                if (CurrentMode == Mode.Learn)
-                {
-                    _dataService.Save(() =>
-                    {
-                        _hat.D3.Color = _on ? FEZHAT.Color.Red : FEZHAT.Color.White;
-                        _on = !_on;
-                    });
+                _controls.MarkTime();
 
-                    _buttonSensor.SetMode(Mode.Model);
-                }
-
-                CurrentMode = _buttonSensor.Mode;
-                SetModeIndicators(CurrentMode);
-            }
-
-            var data = GetData();
-
-            switch (CurrentMode)
-            {
-                case Mode.Learn:
-                    _dataService.Add(data);
-                    Drive(data);
-                    break;
-                case Mode.Model:
-                    _mlService.Model();
-                    _buttonSensor.SetIdle();
-                    break;
-                case Mode.Auto:
-                    if (_mlService.HasModel())
-                    {
-                        (double speed, double turn) = _mlService.Predict(data);
-                        Speed = speed;
-                        Turn = turn;
-                        Drive(speed, turn);
-                    }
-                    else
-                        _buttonSensor.SetIdle();
-                    break;
-                case Mode.Idle:
-                    Drive(data);
-                    break;
+                if (_controls.IsButtonPushed(GamepadButtons.B) || _controls.DIO18Pressed)
+                    return CurrentMode == Mode.Learn ? Mode.Idle : Mode.Learn;
+                else if (_controls.IsButtonPushed(GamepadButtons.Y) || _controls.DIO22Pressed)
+                    return CurrentMode == Mode.Auto ? Mode.Idle : Mode.Auto;
+                else
+                    return CurrentMode;
 
             }
+            else return CurrentMode;
+        }
+
+        private void ExitLearnMode()
+        {
+            bool on = false;
+            _dataService.Save(() =>
+            {
+                _hat.D3.Color = on ? FEZHAT.Color.Red : FEZHAT.Color.White;
+                on = !on;
+            });
+
+            _hat.D3.Color = FEZHAT.Color.Blue;
+
+            _mlService.Model();
+
+            _hat.D2.TurnOff();
+            _hat.D3.TurnOff();
+        }
+
+        private void Process(object sender, object e)
+        {
+            // process peripherals
+            _controls.Process();
+
+            // get mode status changes
+            var mode = GetProcessedMode();
+
+            // ------- mode guards
+            // can't do auto mode without models
+            if (mode == Mode.Auto && !_mlService.HasModel())
+                mode = Mode.Idle;
+
+            // exit learn mode - persist and make models
+            if (CurrentMode == Mode.Learn && mode != Mode.Learn)
+                ExitLearnMode();
+
+            CurrentMode = mode;
+            SetModeIndicators(CurrentMode);
+
+            // ------ process under current mode
+            var data = GetSensorData();
+
+            // handle controller values
+            double speed = 0;
+            double turn = 0;
+
+            if (_controls.IsButtonPushed(GamepadButtons.A))
+                speed = 0.4;
+
+            if (_controls.LeftTrigger > 0)
+                turn = -0.6;
+            else if (_controls.RightTrigger > 0)
+                turn = 0.6;
+            else
+                turn = 0;
+
+            data.Speed = speed;
+            data.Turn = turn;
+
+            // only learn on simple drive mechanism
+            if (CurrentMode == Mode.Learn)
+                _dataService.Add(data);
+            if (CurrentMode == Mode.Auto)
+                (speed, turn) = _mlService.Predict(data);
+
+            Speed = speed;
+            Turn = turn;
+
+            _motor.Drive(Speed, Turn);
 
             Ain1 = _lightSensor.ToColor(data.Ain1);
             Ain2 = _lightSensor.ToColor(data.Ain2);
             Ain3 = _lightSensor.ToColor(data.Ain3);
 
-            Speed = data.Speed;
-            Turn = data.Turn;
-
-        }
-        
-        private void Drive(Data data)
-        {
-            Drive(data.Speed, data.Turn);
-        }
-
-        private void Drive(double speed, double turn)
-        {
-            (var speedA, var speedB) = _controller.Convert(speed, turn);
-            _hat.MotorA.Speed = speedA;
-            _hat.MotorB.Speed = speedB;
+            RightTrigger = _controls.RightTrigger;
+            LeftTrigger = _controls.LeftTrigger;
         }
 
         private void SetModeIndicators(Mode mode)
@@ -266,18 +325,14 @@ namespace LittleLarry.Views
                     _hat.D2.Color = FEZHAT.Color.Red;
                     _hat.D3.Color = FEZHAT.Color.Red;
                     break;
-                case Mode.Model:
-                    _hat.D2.Color = FEZHAT.Color.Blue;
-                    _hat.D3.Color = FEZHAT.Color.Blue;
-                    break;
                 case Mode.Auto:
-                    _hat.D2.Color = FEZHAT.Color.Green;
-                    _hat.D3.Color = FEZHAT.Color.Green;
+                    _hat.D2.Color = FEZHAT.Color.Yellow;
+                    _hat.D3.Color = FEZHAT.Color.Yellow;
                     break;
             }
         }
 
-        private Data GetData()
+        private Data GetSensorData()
         {
             Data data = new Data();
 
@@ -292,11 +347,6 @@ namespace LittleLarry.Views
             data.AccelerationX = x;
             data.AccelerationY = y;
             data.AccelerationZ = z;
-
-            // handle controller values
-            (double speed, double turn) = _controller.GetValues();
-            data.Speed = speed;
-            data.Turn = turn;
 
             return data;
         }

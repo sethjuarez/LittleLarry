@@ -24,9 +24,8 @@ namespace LittleLarry.Hardware
         public void Process()
         {
             // handle button pushes
-            if (_hat.IsDIO18Pressed() && _hat.IsDIO22Pressed()) _buttons.Enqueue(Mode.Auto);
+            if (_hat.IsDIO22Pressed()) _buttons.Enqueue(Mode.Auto);
             else if (_hat.IsDIO18Pressed()) _buttons.Enqueue(Mode.Learn);
-            else if (_hat.IsDIO22Pressed()) _buttons.Enqueue(Mode.Model);
             else _buttons.Enqueue(Mode.Idle);
 
             if (_buttons.Count > 10) _buttons.Dequeue();
@@ -39,11 +38,6 @@ namespace LittleLarry.Hardware
             else if (_buttons.Count > 9 && _buttons.All(m => m == Mode.Learn))
             {
                 _mode = _mode == Mode.Learn ? Mode.Idle : Mode.Learn;
-                _buttons.Clear();
-            }
-            else if (_buttons.Count > 9 && _buttons.All(m => m == Mode.Model))
-            {
-                _mode = _mode == Mode.Model ? Mode.Idle : Mode.Model;
                 _buttons.Clear();
             }
         }
