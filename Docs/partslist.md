@@ -1,16 +1,32 @@
 # Little Larry Parts List
+This writeup is dedicated to the actual parts used to build Little Larry.
 
-1. [Wires!](https://www.amazon.com/gp/product/B01FRZG560/ref=oh_aui_detailpage_o05_s00?ie=UTF8&psc=1)
-2. [Battery](https://www.amazon.com/gp/product/B01JLEO9UC/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1)
-3. (Optional) [Wifi Router](https://www.amazon.com/gp/product/B012ZNMUL6/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
-4. [bluetooth dongle](https://www.amazon.com/gp/product/B00HHLAY7E/ref=oh_aui_detailpage_o07_s00?ie=UTF8&psc=1)
-5. [tft screen](https://www.amazon.com/gp/product/B012ZRYDYY/ref=oh_aui_detailpage_o08_s00?ie=UTF8&psc=1)
-6. [micro sd](https://www.amazon.com/gp/product/B00P3NMVVU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
-7. [wireless dongle](https://www.amazon.com/gp/product/B008IFXQFU/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1)
-8. [raspberry pi 3 motherboard](https://www.amazon.com/gp/product/B01CD5VC92/ref=oh_aui_detailpage_o01_s00?ie=UTF8&psc=1)
-9. [motor chassis](https://www.amazon.com/gp/product/B01BXPETQG/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1)
-10. [wires](https://www.amazon.com/gp/product/B00M5WLZDW/ref=oh_aui_detailpage_o06_s00?ie=UTF8&psc=1)
-11. [lithium battery](https://www.amazon.com/Makerfocus-Lithium-Expansion-Cellphone-Raspberry/dp/B01LAEX7J0/)
-12. [fez hat](https://www.ghielectronics.com/catalog/product/500)
-13. [standoff screws](https://www.ghielectronics.com/catalog/product/371)
-14. [regular screws](https://www.ghielectronics.com/catalog/product/489)
+## Main Components
+
+Component | Price
+----------|-------
+[Raspberry Pi 3 Model B Motherboard](https://www.amazon.com/gp/product/B01CD5VC92/) | $40.99
+[FEZ HAT](https://www.ghielectronics.com/catalog/product/500) | $34.95
+[Lithium Battery Expansion Board](https://www.amazon.com/Makerfocus-Lithium-Expansion-Cellphone-Raspberry/dp/B01LAEX7J0/) | $16.99
+[TP-Link N150 Wireless Nano USB Adapter](https://www.amazon.com/gp/product/B008IFXQFU/) | $7.98
+[Samsung EVO 32GB Class 10 Micro SDHC Card](https://www.amazon.com/gp/product/B00IVPU786) | $12.00
+[Motor Smart Robot Car Chassis Kit](https://www.amazon.com/gp/product/B01BXPETQG/) | $16.49
+[Reflectance Sensor Array](https://www.pololu.com/product/2456) | $4.95
+[Wiring](https://www.amazon.com/gp/product/B00M5WLZDW/) | $9.99
+[Standoff Screws](https://www.ghielectronics.com/catalog/product/371) | $1.95
+[Regular Screws](https://www.ghielectronics.com/catalog/product/489) | $3.00
+**Total** | $149.29
+
+## Optional (but helpful)
+Component | Price
+----------|-------
+[Wireless Router](https://www.amazon.com/gp/product/B012ZNMUL6/) | $29.99
+[TFT LCD Screen Display](https://www.amazon.com/gp/product/B012ZRYDYY/) | $65.99
+[Micro USB Cables](https://www.amazon.com/gp/product/B01FRZG560/) | $8.99
+**Total** |  $104.97
+
+## Useful Links
+- [Windows IoT Dev Center](https://developer.microsoft.com/en-us/windows/iot)
+- [Installing Windows on your Pi 3](https://developer.microsoft.com/en-us/windows/iot/Docs/GetStarted/rpi3/sdcard/stable/GetStartedStep1.htm)
+- [Raspberry Pi Pin Mappings](https://developer.microsoft.com/en-us/windows/iot/docs/pinmappingsrpi)
+- [IoT Hardware Compatibility List](https://developer.microsoft.com/en-us/windows/iot/docs/hardwarecompatlist)
