@@ -42,11 +42,6 @@ namespace LittleLarry.Views
 
             var connection = new Connection();
 
-            /********* REMOVE *********/
-            //_controller = new Controller();
-            //_buttonSensor = new ButtonSensor(_hat);
-            /**************************/
-
             _controls = new Controls(_hat);
             _lightSensor = new LightSensor(_hat);
             _motor = new Motor(_hat);
