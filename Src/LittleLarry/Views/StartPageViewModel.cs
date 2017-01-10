@@ -17,10 +17,7 @@ namespace LittleLarry.Views
         private FEZHAT _hat;
         private DispatcherTimer _timer;
         private Motor _motor;
-
-        //private ButtonSensor _buttonSensor;
-        //private Controller _controller;
-
+        
         private Controls _controls;
         private LightSensor _lightSensor;
         
@@ -51,7 +48,7 @@ namespace LittleLarry.Views
 
             CurrentMode = Mode.Idle;
             SetModeIndicators(CurrentMode);
-
+            
             _timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
             _timer.Tick += Process;
             _timer.Start();
@@ -282,12 +279,12 @@ namespace LittleLarry.Views
             double turn = 0;
 
             if (_controls.IsButtonPushed(GamepadButtons.A))
-                speed = 0.4;
+                speed = Motor.Speed;
 
             if (_controls.LeftTrigger > 0)
-                turn = -0.6;
+                turn = Motor.Left;
             else if (_controls.RightTrigger > 0)
-                turn = 0.6;
+                turn = Motor.Right;
             else
                 turn = 0;
 

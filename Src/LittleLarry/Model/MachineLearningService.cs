@@ -88,6 +88,7 @@ namespace LittleLarry.Model
         {
             var model = generator.Generate(data);
             Save(model, name);
+            SaveText(model.ToString(), "model");
             return model;
         }
 
@@ -99,6 +100,16 @@ namespace LittleLarry.Model
             using (var fs = new FileStream(file, FileMode.CreateNew))
             using (var f = new StreamWriter(fs))
                 new JsonWriter(f).Write(model);
+        }
+
+
+        private void SaveText(string text, string name)
+        {
+            var file = Path.Combine(_connection.DataPath, $"{name}.txt");
+            if (File.Exists(file)) File.Delete(file);
+            using (var fs = new FileStream(file, FileMode.CreateNew))
+            using (var f = new StreamWriter(fs))
+                f.Write(text);
         }
 
         private T Load<T>(string name)
@@ -116,5 +127,6 @@ namespace LittleLarry.Model
             else
                 return default(T);
         }
+
     }
 }

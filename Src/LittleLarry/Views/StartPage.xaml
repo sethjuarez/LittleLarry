@@ -20,9 +20,6 @@
 
     <StackPanel Orientation="Horizontal" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Width="100">
-            <TextBlock Text="---------" />
-            <TextBlock Text="---------" />
-            <Button x:Name="ClearHistory">Clear History</Button>
             <TextBlock Text="Mode: " />
             <TextBlock Text="Recs: " />
             <TextBlock Text="Accel: " />
@@ -37,9 +34,6 @@
             <TextBlock Text="Btns: " />
         </StackPanel>
         <StackPanel Width="800">
-            <TextBlock Text="---------" />
-            <TextBlock Text="---------" />
-            <TextBlock Text="---------" />
             <TextBlock Name="LightTextBox" Text="{Binding CurrentMode}" Width="800"/>
             <TextBlock Name="TempTextBox" Text="{Binding Count}" />
             <TextBlock Name="AccelTextBox" />

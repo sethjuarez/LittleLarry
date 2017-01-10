@@ -1,9 +1,9 @@
-﻿using SQLite;
+﻿using LittleLarry.Hardware;
+using SQLite;
 using System;
 
 namespace LittleLarry.Model
 {
-
     public class Data
     {
         [PrimaryKey, AutoIncrement]
@@ -38,9 +38,9 @@ namespace LittleLarry.Model
                 case Model.Turn.Straight:
                     return 0;
                 case Model.Turn.Left:
-                    return -0.6;
+                    return Motor.Left;
                 case Model.Turn.Right:
-                    return 0.6;
+                    return Motor.Right;
                 default:
                     return 0;
             }
@@ -64,7 +64,7 @@ namespace LittleLarry.Model
                 case Model.Speed.Stop:
                     return 0;
                 case Model.Speed.Go:
-                    return 0.4;
+                    return Motor.Speed;
                 default:
                     return 0;
             }
