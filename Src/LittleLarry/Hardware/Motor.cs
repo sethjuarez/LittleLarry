@@ -10,8 +10,8 @@ namespace LittleLarry.Hardware
     public class Motor
     {
         public const double Speed = 0.5;
-        public const double Left = -0.1;
-        public const double Right = 0.1;
+        public const double Left = -0.5;
+        public const double Right = 0.5;
 
         private FEZHAT _hat;
         public Motor(FEZHAT hat)

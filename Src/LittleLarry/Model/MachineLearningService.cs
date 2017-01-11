@@ -1,4 +1,5 @@
-﻿using numl;
+﻿using LittleLarry.Hardware;
+using numl;
 using numl.Model;
 using numl.Serialization;
 using numl.Supervised;
@@ -79,7 +80,7 @@ namespace LittleLarry.Model
             if (HasModel())
             {
                 var turn = (Turn)TurnModel.PredictValue(data);
-                return (0.4, Data.DirectionToTurn(turn));
+                return (Motor.Speed, Data.DirectionToTurn(turn));
             }
             else return (0, 0);
         }

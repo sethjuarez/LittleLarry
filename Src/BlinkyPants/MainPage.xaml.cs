@@ -18,14 +18,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace BlinkyPants
 {
-    private FEZHAT _hat;
-    private DispatcherTimer _timer;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private FEZHAT _hat;
+        private DispatcherTimer _timer;
         public MainPage()
         {
             InitializeComponent();
@@ -36,13 +36,14 @@ namespace BlinkyPants
         {
             _hat = await FEZHAT.CreateAsync();
 
-            _timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(500) };
+            _timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
 
+            bool on = false;
             _timer.Tick += (s, e) =>
-                _hat.D2.Color  =
-                        _hat.D2.Color == FEZHAT.Color.Red ? 
-                        FEZHAT.Color.Black : 
-                        FEZHAT.Color.Red;
+            {
+                _hat.D2.Color = on ? FEZHAT.Color.Red : FEZHAT.Color.Black;
+                on = !on;
+            };
 
             _timer.Start();
         }
