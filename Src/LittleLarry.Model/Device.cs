@@ -88,7 +88,15 @@ namespace LittleLarry.Model
             SetModeIndicators(CurrentState);
 
             // ------ process under current mode
-            var data = GetSensorData();
+            var data = new Data
+            {
+                Ain1 = _hat.Ain1,
+                Ain2 = _hat.Ain2,
+                Ain3 = _hat.Ain3,
+                AccelerationX = _hat.AccelerationX,
+                AccelerationY = _hat.AccelerationY,
+                AccelerationZ = _hat.AccelerationZ
+            };
 
             // handle controller values
             double speed = 0;
@@ -109,7 +117,7 @@ namespace LittleLarry.Model
 
             // only learn on simple drive mechanism
             if (CurrentState == State.Learn)
-                _dataService.Insert(data);
+                _dataService.Add(data);
             if (CurrentState == State.Auto)
                 (speed, turn) = _mlService.Predict(data);
 
@@ -136,23 +144,6 @@ namespace LittleLarry.Model
                     _hat.D3Color = LedColor.Yellow;
                     break;
             }
-        }
-
-        private Data GetSensorData()
-        {
-            Data data = new Data();
-
-            // handle line tracking sensors
-            data.Ain1 = _hat.Ain1;
-            data.Ain2 = _hat.Ain2;
-            data.Ain3 = _hat.Ain3;
-
-            // handle accelerometer values;
-            data.AccelerationX = _hat.AccelerationX;
-            data.AccelerationY = _hat.AccelerationY;
-            data.AccelerationZ = _hat.AccelerationZ;
-
-            return data;
         }
     }
 }

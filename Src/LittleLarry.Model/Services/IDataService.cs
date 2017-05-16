@@ -9,9 +9,9 @@ namespace LittleLarry.Model.Services
     public interface IDataService : IDisposable
     {
         void Initialize();
-        int GetRecordCount();
+        int RecordCount { get; }
         void Clear();
-        void Insert(Data data);
+        void Add(Data data);
         void Save(Action progress = null);
         void Close();
         IEnumerable<Data> GetData();

@@ -10,7 +10,7 @@ namespace LittleLarry.Model.Hardware
         public const double Left = -0.5;
         public const double Right = 0.5;
 
-        private static (double a, double b) Convert(double speed, double turn)
+        public static (double a, double b) Convert(double speed, double turn)
         {
             double GetFloor(double num)
             {

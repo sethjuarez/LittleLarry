@@ -110,6 +110,9 @@
     <Compile Include="Activation\ActivationHandler.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
+    <Compile Include="Models\FakeData.cs" />
+    <Compile Include="Models\FakeDataService.cs" />
+    <Compile Include="Models\FakeFezHat.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultLaunchActivationHandler.cs" />
     <Compile Include="Services\NavigationServiceEx.cs" />

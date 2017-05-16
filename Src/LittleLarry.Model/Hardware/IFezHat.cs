@@ -13,7 +13,8 @@ namespace LittleLarry.Model.Hardware
         Blue,
         Red,
         Green,
-        Yellow
+        Yellow,
+        Black
     }
     public interface IFezHat : IProcess
     {
@@ -27,6 +28,9 @@ namespace LittleLarry.Model.Hardware
         double AccelerationX { get; }
         double AccelerationY { get; }
         double AccelerationZ { get; }
+
+        double MotorA { get; set; }
+        double MotorB { get; set; }
 
         LedColor D2Color { get; set; }
         LedColor D3Color { get; set; }
