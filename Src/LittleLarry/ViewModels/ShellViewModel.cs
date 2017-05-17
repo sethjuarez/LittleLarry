@@ -138,10 +138,10 @@ namespace LittleLarry.ViewModels
 
             // More on Segoe UI Symbol icons: https://docs.microsoft.com/windows/uwp/style/segoe-ui-symbol-font
             // Edit String/en-US/Resources.resw: Add a menu item title for each page
-            _primaryItems.Add(new ShellNavigationItem("Shell_Main".GetLocalized(), Symbol.Document, typeof(MainViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Main".GetLocalized(), Symbol.Home, typeof(MainViewModel).FullName));
             _secondaryItems.Add(new ShellNavigationItem("Shell_Settings".GetLocalized(), Symbol.Setting, typeof(SettingsViewModel).FullName));
-            _primaryItems.Add(new ShellNavigationItem("Shell_Data".GetLocalized(), Symbol.Document, typeof(DataViewModel).FullName));
-            _primaryItems.Add(new ShellNavigationItem("Shell_Model".GetLocalized(), Symbol.Document, typeof(ModelViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Data".GetLocalized(), Symbol.Library, typeof(DataViewModel).FullName));
+            _primaryItems.Add(new ShellNavigationItem("Shell_Model".GetLocalized(), Symbol.FourBars, typeof(ModelViewModel).FullName));
         }
 
         private void ItemSelected(ShellNavigationItem e)

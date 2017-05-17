@@ -26,8 +26,18 @@
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
             <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
                 Place your content here.-->
+            <StackPanel>
+                <Button x:Name="RefreshButton" Command="{Binding RefreshCommand}">Refresh</Button>
+                <TextBlock x:Name="TextModel" 
+                    FontSize="20" 
+                    TextWrapping="Wrap" 
+                    Foreground="Black"
+                    Text="{Binding Model}" 
+                    FocusVisualPrimaryBrush="Black" />
+            </StackPanel>
+
         </Grid>
-    
+
         <!--  Adaptive triggers  -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">

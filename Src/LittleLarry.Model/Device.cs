@@ -1,5 +1,6 @@
 ﻿using LittleLarry.Model.Hardware;
 using LittleLarry.Model.Services;
+using numl.Supervised;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace LittleLarry.Model
         public State CurrentState { get; private set; }
         public Data CurrentData { get; private set; }
 
+        public int RecordCount => _dataService.RecordCount;
+        public IModel Model => _mlService.TurnModel;
+
         private IFezHat _hat;
         private IDataService _dataService;
         public Controller Controls { get; private set; }
@@ -26,6 +30,7 @@ namespace LittleLarry.Model
             _dataService = dataService;
             Controls = new Controller();
             _mlService = new MachineLearningService(_dataService);
+            CurrentState = State.Idle;
         }
 
         private State GetProcessedState()

@@ -3,6 +3,8 @@ using GalaSoft.MvvmLight;
 using LittleLarry.Helpers;
 using System.Collections.Generic;
 using LittleLarry.Model;
+using Windows.UI.Xaml;
+using LittleLarry.Model.Hardware;
 
 namespace LittleLarry.ViewModels
 {
@@ -149,10 +151,45 @@ namespace LittleLarry.ViewModels
             }
         }
 
-        Device _device;
-        public MainViewModel()
+
+
+        private string _buttons;
+        public string Buttons
         {
-            _device = Singleton<Device>.Instance;
+            get { return _buttons; }
+            set
+            {
+                if (_buttons != value)
+                {
+                    _buttons = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        
+
+        private Device _device;
+        private DispatcherTimer _timer;
+        public MainViewModel(Device device)
+        {
+            _device = device;
+            _timer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
+            _timer.Tick += (s, e) =>
+            {
+                _device.Process();
+                CurrentState = _device.CurrentState;
+                Ain1 = Motor.ToColor(_device.CurrentData.Ain1);
+                Ain2 = Motor.ToColor(_device.CurrentData.Ain2);
+                Ain3 = Motor.ToColor(_device.CurrentData.Ain3);
+                LeftTrigger = _device.Controls.LeftTrigger;
+                RightTrigger = _device.Controls.RightTrigger;
+                Buttons = _device.Controls.GetGamePadButtons();
+                Speed = _device.CurrentData.Speed;
+                Turn = _device.CurrentData.Turn;
+                Count = _device.RecordCount;
+            };
+            _timer.Start();
         }
     }
 }

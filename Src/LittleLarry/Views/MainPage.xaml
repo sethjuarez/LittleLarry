@@ -67,7 +67,7 @@
                     </Border>
                     <TextBlock Name="CntrlLTextBox" Text="{Binding Speed}" />
                     <TextBlock Name="CntrlRTextBox" Text="{Binding Turn}"/>
-                    <TextBlock Name="ButtonsTextBox" />
+                    <TextBlock Name="ButtonsTextBox" Text="{Binding Buttons}" />
                 </StackPanel>
             </StackPanel>
         </Grid>

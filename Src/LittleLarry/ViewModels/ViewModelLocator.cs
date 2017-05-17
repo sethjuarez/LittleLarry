@@ -1,9 +1,13 @@
 using GalaSoft.MvvmLight.Ioc;
-
+using LittleLarry.Model;
+using LittleLarry.Model.Hardware;
+using LittleLarry.Model.Services;
+using LittleLarry.Models;
 using LittleLarry.Services;
 using LittleLarry.Views;
 
 using Microsoft.Practices.ServiceLocation;
+using Windows.System.Profile;
 
 namespace LittleLarry.ViewModels
 {
@@ -14,9 +18,24 @@ namespace LittleLarry.ViewModels
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-            SimpleIoc.Default.Register(() => _navigationService);
+            if (!SimpleIoc.Default.IsRegistered<NavigationServiceEx>())
+                SimpleIoc.Default.Register(() => _navigationService);
             SimpleIoc.Default.Register<ShellViewModel>();
+
+            // device (should have fez hat)
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.IoT")
+            {
+                // add fez hat data
+            }
+            // use fakes for everything else
+            else
+            {
+                SimpleIoc.Default.Register<IDataService, FakeDataService>();
+                SimpleIoc.Default.Register<IFezHat, FakeFezHat>();
+            }
+
+            SimpleIoc.Default.Register<Device>();
+
             Register<MainViewModel, MainPage>();
             Register<SettingsViewModel, SettingsPage>();
             Register<DataViewModel, DataPage>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Windows.Gaming.Input;
 
@@ -15,7 +16,22 @@ namespace LittleLarry.Model.Hardware
         public double RightThumbStickY { get; private set; }
         public double RightTrigger { get; private set; }
 
-        private Gamepad _gamepad = null;
+        public string GetGamePadButtons()
+        {
+            var b = GetFlags(Buttons)
+                            .Where(btn => (GamepadButtons)btn != GamepadButtons.None)
+                            .Select(btn => Enum.GetName(typeof(GamepadButtons), btn));
+
+            return string.Join(", ", b.ToArray());
+        }
+        static IEnumerable<Enum> GetFlags(Enum input)
+        {
+            foreach (Enum value in Enum.GetValues(input.GetType()))
+                if (input.HasFlag(value))
+                    yield return value;
+        }
+
+    private Gamepad _gamepad = null;
         private DateTime _lastProcess;
 
         public Controller()

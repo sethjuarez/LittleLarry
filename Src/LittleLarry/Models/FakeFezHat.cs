@@ -32,7 +32,7 @@ namespace LittleLarry.Models
         private int _index = 0;
         public void Process()
         {
-            _index = _index % FakeData.Array.Length;
+            _index = ++_index % FakeData.Array.Length;
 
             Ain1 = FakeData.Array[_index].Ain1;
             Ain2 = FakeData.Array[_index].Ain2;
@@ -41,6 +41,7 @@ namespace LittleLarry.Models
             AccelerationX = FakeData.Array[_index].AccelerationX;
             AccelerationY = FakeData.Array[_index].AccelerationY;
             AccelerationZ = FakeData.Array[_index].AccelerationZ;
+
         }
 
         public void TurnOffD2() => D2Color = LedColor.Black;

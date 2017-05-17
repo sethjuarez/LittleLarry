@@ -25,10 +25,8 @@ namespace LittleLarry.Model.Services
         {
             // register assembly for type information
             Register.Assembly(typeof(Data).GetTypeInfo().Assembly);
-
-            _modelPath = Path.Combine(_dataService.DatPath, $"{TURNMODEL}.json");
-
             _dataService = dataService;
+            _modelPath = Path.Combine(_dataService.DatPath, $"{TURNMODEL}.json");
             InitializeGenerators();
         }
 

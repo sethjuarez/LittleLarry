@@ -12,6 +12,11 @@ namespace LittleLarry.Models
     public class FakeDataService : IDataService
     {
         private List<Data> _data;
+        public FakeDataService()
+        {
+            _data = new List<Data>();
+        }
+
         public string DatPath => ApplicationData.Current.LocalFolder.Path;
         public int RecordCount => _data.Count;
         public void Initialize() => _data = new List<Data>();
