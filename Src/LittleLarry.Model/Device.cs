@@ -1,12 +1,9 @@
-﻿using LittleLarry.Model.Hardware;
-using LittleLarry.Model.Services;
-using numl.Supervised;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using numl.Supervised;
 using Windows.Gaming.Input;
+using LittleLarry.Model.Hardware;
+using LittleLarry.Model.Services;
 
 namespace LittleLarry.Model
 {

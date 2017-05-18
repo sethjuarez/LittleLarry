@@ -24,16 +24,12 @@ namespace LittleLarry.ViewModels
 
             // device (should have fez hat)
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.IoT")
-            {
-                // add fez hat data
-            }
+                SimpleIoc.Default.Register<IFezHat, FezHat>();
             // use fakes for everything else
             else
-            {
-                SimpleIoc.Default.Register<IDataService, FakeDataService>();
                 SimpleIoc.Default.Register<IFezHat, FakeFezHat>();
-            }
 
+            SimpleIoc.Default.Register<IDataService, DataService>();
             SimpleIoc.Default.Register<Device>();
 
             Register<MainViewModel, MainPage>();

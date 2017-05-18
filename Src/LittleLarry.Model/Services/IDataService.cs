@@ -15,6 +15,6 @@ namespace LittleLarry.Model.Services
         void Save(Action progress = null);
         void Close();
         IEnumerable<Data> GetData();
-        string DatPath { get; }
+        string DataPath { get; }
     }
 }

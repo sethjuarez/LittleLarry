@@ -9,11 +9,13 @@ namespace LittleLarry.Model.Hardware
 {
     public enum LedColor
     {
-        White,
-        Blue,
         Red,
         Green,
+        Blue,
+        Cyan,
+        Magenta,
         Yellow,
+        White,
         Black
     }
     public interface IFezHat : IProcess

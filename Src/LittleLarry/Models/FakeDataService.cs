@@ -17,7 +17,7 @@ namespace LittleLarry.Models
             _data = new List<Data>();
         }
 
-        public string DatPath => ApplicationData.Current.LocalFolder.Path;
+        public string DataPath => ApplicationData.Current.LocalFolder.Path;
         public int RecordCount => _data.Count;
         public void Initialize() => _data = new List<Data>();
         public IEnumerable<Data> GetData() => _data;
