@@ -126,25 +126,24 @@
   <data name="Settings_Theme.Text" xml:space="preserve">
     <value>Theme</value>
   </data>
-  <data name="Settings_ThemeToggle.OnContent" xml:space="preserve">  
+  <data name="Settings_ThemeToggle.OnContent" xml:space="preserve">
     <value>Light</value>
   </data>
-  <data name="Settings_ThemeToggle.OffContent" xml:space="preserve">    
+  <data name="Settings_ThemeToggle.OffContent" xml:space="preserve">
     <value>Dark</value>
   </data>
-  <data name="Settings_About.Text" xml:space="preserve">    
+  <data name="Settings_About.Text" xml:space="preserve">
     <value>About this application</value>
   </data>
-  <data name="Settings_AboutDescription.Text" xml:space="preserve">    
-    <value>Settings page placeholder text.  Your app description goes here.</value>
+  <data name="Settings_AboutDescription.Text" xml:space="preserve">
+    <value>LittleLarry is a crazy robot I built to think on its own.</value>
   </data>
-  <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">    
-    <value>Privacy Terms</value>
+  <data name="Settings_PrivacyTermsLink.Content" xml:space="preserve">
+    <value>Learn More</value>
   </data>
-  <data name="Settings_PrivacyTermsLink.NavigateUri" xml:space="preserve">  
-    <value>https://YourPrivacyUrlGoesHere/</value>
+  <data name="Settings_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://github.com/sethjuarez/LittleLarry</value>
   </data>
-  NavigateUri
   <data name="Data_Title.Text" xml:space="preserve">
     <value>Data</value>
   </data>
