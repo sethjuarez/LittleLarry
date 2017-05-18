@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:LittleLarry.Model"
     DataContext="{Binding DataViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
     <Grid
@@ -25,9 +26,70 @@
             Grid.Row="1" 
             Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
             <!--The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.-->
+                Place your content here. -->
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button x:Name="RefreshButton" Grid.Row="0" Command="{Binding RefreshCommand}">Refresh</Button>
+                <Grid x:Name="DataGrid" Grid.Row="1" Background="{ThemeResource TextControlForeground}" Height="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="85" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="Ain1Text" Grid.Column="0" Text="Ain1" />
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="Ain2Text" Grid.Column="1" Text="Ain2" />
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="Ain3Text" Grid.Column="2" Text="Ain3" />
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="AccelXText" Grid.Column="3" Text="AccelX" />
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="AccelYText" Grid.Column="4" Text="AccelY" />
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="AccelZText" Grid.Column="5" Text="AccelZ" />
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="SpeedText" Grid.Column="6" Text="Speed" />
+                    <TextBlock Foreground="{ThemeResource TextControlBorderBrushFocused}" VerticalAlignment="Bottom" Padding="5" TextAlignment="Center" x:Name="TurnText" Grid.Column="7" Text="Turn" />
+                </Grid>
+                <Border Grid.Row="2" BorderThickness="0" BorderBrush="{ThemeResource TextControlForeground}" VerticalAlignment="Top">
+                    <ListView x:Name="ItemCollection" 
+                              ItemsSource="{Binding DataCollection}" 
+                              Height="600"
+                              HorizontalAlignment="Stretch" 
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                              ScrollViewer.VerticalScrollMode="Enabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="44">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="85" />
+                                        <ColumnDefinition Width="85" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextAlignment="Right" x:Name="Ain1Text" Grid.Column="0" Text="{Binding Ain1}"   />
+                                    <TextBlock TextAlignment="Right" x:Name="Ain2Text" Grid.Column="1" Text="{Binding Ain2}" />
+                                    <TextBlock TextAlignment="Right" x:Name="Ain3Text" Grid.Column="2" Text="{Binding Ain3}" />
+                                    <TextBlock TextAlignment="Right" x:Name="AccelXText" Grid.Column="3" Text="{Binding AccelerationX}" />
+                                    <TextBlock TextAlignment="Right" x:Name="AccelYText" Grid.Column="4" Text="{Binding AccelerationY}" />
+                                    <TextBlock TextAlignment="Right" x:Name="AccelZText" Grid.Column="5" Text="{Binding AccelerationZ}" />
+                                    <TextBlock TextAlignment="Center" x:Name="SpeedText" Grid.Column="6" Text="{Binding Speed}" />
+                                    <TextBlock TextAlignment="Center" x:Name="TurnText" Grid.Column="7" Text="{Binding Turn}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+            </Grid>
         </Grid>
-    
+
         <!--  Adaptive triggers  -->
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WindowStates">

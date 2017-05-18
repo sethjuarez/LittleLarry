@@ -40,11 +40,11 @@ namespace LittleLarry.Model
             {
                 Controls.MarkTime();
 
-                if (Controls.IsButtonPushed(GamepadButtons.B) || _hat.DIO18Pressed)
+                if (Controls.IsButtonPushed(GamepadButtons.LeftShoulder) || _hat.DIO18Pressed)
                     return CurrentState == State.Learn ? State.Idle : State.Learn;
-                else if (Controls.IsButtonPushed(GamepadButtons.Y) || _hat.DIO22Pressed)
+                else if (Controls.IsButtonPushed(GamepadButtons.RightShoulder) || _hat.DIO22Pressed)
                     return CurrentState == State.Auto ? State.Idle : State.Auto;
-                else if (Controls.IsButtonPushed(GamepadButtons.X))
+                else if (Controls.IsButtonPushed(GamepadButtons.View))
                 {
                     _dataService.Clear();
                     return State.Idle;

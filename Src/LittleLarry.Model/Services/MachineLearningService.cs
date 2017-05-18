@@ -4,6 +4,7 @@ using numl.Model;
 using numl.Serialization;
 using numl.Supervised;
 using numl.Supervised.DecisionTree;
+using numl.Supervised.NaiveBayes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,10 +36,10 @@ namespace LittleLarry.Model.Services
         private void InitializeGenerators()
         {
             var t = Descriptor.For<Data>()
-                            .With(d => d.Ain1)
-                            .With(d => d.Ain2)
-                            .With(d => d.Ain3)
-                            .Learn(d => d.Direction);
+                                .With(d => d.Ain1)
+                                .With(d => d.Ain2)
+                                .With(d => d.Ain3)
+                                .Learn(d => d.Direction);
 
             TurnGenerator = new DecisionTreeGenerator(descriptor: t, depth: 10, width: 4, hint: 0);
             
