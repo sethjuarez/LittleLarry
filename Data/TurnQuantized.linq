@@ -1,12 +1,12 @@
 <Query Kind="Statements">
   <Connection>
-    <ID>242b8e44-ca14-48fb-8248-86c172146be9</ID>
+    <ID>c93c173a-30d1-4506-88b2-87f3c50ccd1a</ID>
     <Persist>true</Persist>
     <Driver Assembly="IQDriver" PublicKeyToken="5b59726538a49684">IQDriver.IQDriver</Driver>
     <Provider>System.Data.SQLite</Provider>
-    <CustomCxString>Data Source=C:\Users\SETH-LAPTOP\Desktop\LittleLarryData.db;FailIfMissing=True</CustomCxString>
-    <AttachFileName>C:\Users\SETH-LAPTOP\Desktop\LittleLarryData.db</AttachFileName>
-    <DisplayName>larry</DisplayName>
+    <CustomCxString>Data Source=C:\projects\LittleLarry\Data\LittleLarryData_3.db;FailIfMissing=True</CustomCxString>
+    <AttachFileName>C:\projects\LittleLarry\Data\LittleLarryData_3.db</AttachFileName>
+    <DisplayName>LittleLarry3</DisplayName>
     <DriverData>
       <StripUnderscores>false</StripUnderscores>
       <QuietenAllCaps>false</QuietenAllCaps>
