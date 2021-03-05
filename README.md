@@ -26,7 +26,7 @@ Component | Price
 **Total** |  $104.97
 
 ## Useful Links
-- [Windows IoT Dev Center](https://developer.microsoft.com/en-us/windows/iot)
-- [Installing Windows on your Pi 3](https://developer.microsoft.com/en-us/windows/iot/Docs/GetStarted/rpi3/sdcard/stable/GetStartedStep1.htm)
-- [Raspberry Pi Pin Mappings](https://developer.microsoft.com/en-us/windows/iot/docs/pinmappingsrpi)
-- [IoT Hardware Compatibility List](https://developer.microsoft.com/en-us/windows/iot/docs/hardwarecompatlist)
+- [Windows IoT Dev Center](https://developer.microsoft.com/windows/iot?WT.mc_id=aiml-0000-sejuare)
+- [Installing Windows on your Pi 3](https://developer.microsoft.com/windows/iot/Docs/GetStarted/rpi3/sdcard/stable/GetStartedStep1.htm?WT.mc_id=aiml-0000-sejuare)
+- [Raspberry Pi Pin Mappings](https://developer.microsoft.com/windows/iot/docs/pinmappingsrpi?WT.mc_id=aiml-0000-sejuare)
+- [IoT Hardware Compatibility List](https://developer.microsoft.com/windows/iot/docs/hardwarecompatlist?WT.mc_id=aiml-0000-sejuare)
